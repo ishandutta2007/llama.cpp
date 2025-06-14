@@ -27,10 +27,10 @@
 #define MA_NO_ENGINE
 #define MA_NO_GENERATION
 #define MA_API static
-#include "vendor/miniaudio.h"
+#include "miniaudio/miniaudio.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "vendor/stb_image.h"
+#include "stb/stb_image.h"
 
 #define LOG_INF(...) fprintf(stdout, __VA_ARGS__)
 #define LOG_ERR(...) fprintf(stderr, __VA_ARGS__)
@@ -311,6 +311,7 @@ int32_t mtmd_helper_eval_chunk_single(mtmd_context * ctx,
         GGML_ABORT("chunk type not supported");
     }
 
+    llama_batch_free(text_batch);
     return 0;
 }
 
