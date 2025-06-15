@@ -2,8 +2,9 @@
 
 #include "chat.h"
 #include "json-partial.h"
-#include "json.hpp"
 #include "regex-partial.h"
+
+#include <nlohmann/json.hpp>
 
 #include <optional>
 #include <string>
@@ -114,4 +115,6 @@ class common_chat_msg_parser {
         const std::vector<std::vector<std::string>> & args_paths = {},
         const std::vector<std::vector<std::string>> & content_paths = {}
     );
+
+    void clear_tools();
 };

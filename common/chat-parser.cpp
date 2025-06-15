@@ -49,6 +49,7 @@ bool common_chat_msg_parser::add_tool_call(const std::string & name, const std::
 
     // LOG_DBG("Tool call arguments:\n\traw: %s\n\tresult: %s\n", arguments.c_str(), tool_call.arguments.c_str());
     result_.tool_calls.emplace_back(tool_call);
+
     return true;
 }
 bool common_chat_msg_parser::add_tool_call(const json & tool_call) {
@@ -154,9 +155,10 @@ bool common_chat_msg_parser::try_parse_reasoning(const std::string & start_think
             if (!rest.empty()) {
                 handle_reasoning(rest, /* closed */ !is_partial());
             }
-            if (!syntax_.thinking_forced_open) {
-                throw common_chat_msg_partial_exception(end_think);
-            }
+            // Allow unclosed thinking tags, for now (https://github.com/ggml-org/llama.cpp/issues/13812, https://github.com/ggml-org/llama.cpp/issues/13877)
+            // if (!syntax_.thinking_forced_open) {
+            //     throw common_chat_msg_partial_exception(end_think);
+            // }
             return true;
         }
     }
@@ -376,4 +378,8 @@ std::optional<common_chat_msg_parser::consume_json_result> common_chat_msg_parse
         cleaned,
         /* .is_partial = */ found_healing_marker,
     };
+}
+
+void common_chat_msg_parser::clear_tools() {
+    result_.tool_calls.clear();
 }
